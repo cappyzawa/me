@@ -35,8 +35,12 @@ jobs:
       uses: nuxt/actions-yarn@master
       with:
         args: run build
-    - run: git config --local user.name=cappyzawa
-    - run: git config --local user.email=cappyzawa@yahoo.ne.jp
-    - run: git config --local user.password=${GITHUB_TOKEN}
+    - run: |
+        git checkout -b tmpbranch
+        git config --local user.name cappyzawa
+        git config --local user.email cappyzawa@yahoo.ne.jp
+        git commit -am "[ci skip] BUILD by bot" --allow-empty
+        git remote set-url origin https://cappyzawa:${GITHUB_TOKEN}@github.com/cappyzawa/blog
+        git push origin tmpbranch:master
       env:
         GITHUB_TOKEN: ${{ secrets.TOKEN }}
