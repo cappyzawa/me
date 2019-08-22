@@ -1,0 +1,21 @@
+{
+  "name": "blog",
+  "version": "1.0.0",
+  "description": "cappyzawa blog",
+  "main": "index.js",
+  "repository": "https://github.com/cappyzawa/blog",
+  "author": "cappyzawa <cappyzawa@yahoo.ne.jp>",
+  "license": "MIT",
+  "private": false,
+  "scripts": {
+    "build": "npx elm make src/Main.elm --output=docs/index.html",
+    "start": "npx elm reactor",
+    "format": "npx elm-format --elm-version=0.19 src --yes"
+  },
+  "devDependencies": {
+    "elm": "^0.19.0-no-deps",
+    "elm-format": "^0.8.2",
+    "elm-test": "^0.19.0-rev6",
+    "rimraf": "^3.0.0"
+  }
+}
