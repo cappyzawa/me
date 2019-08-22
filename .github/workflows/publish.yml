@@ -1,5 +1,14 @@
 name: Test & Publish
-on: [push]
+on:
+  push:
+    branches:
+    - master
+    paths:
+    - "src/*"
+    - ".github/*"
+    - "package.json"
+    - "yarn.lock"
+    - "elm.json"
 
 jobs:
   test:
@@ -35,7 +44,8 @@ jobs:
       uses: nuxt/actions-yarn@master
       with:
         args: run build
-    - run: |
+    - name: publish
+      run: |
         git checkout -b tmpbranch
         git config --local user.name cappyzawa
         git config --local user.email cappyzawa@yahoo.ne.jp
