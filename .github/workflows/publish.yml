@@ -1,0 +1,19 @@
+name: Publish
+on: [push]
+
+jobs:
+  test:
+    name: publish
+    runs-on: ubuntu-latest
+    steps:
+    - name: checkout
+      uses: actions/checkout@master
+    - name: build
+      uses: nuxt/actions-yarn@master
+      with:
+        args: run build
+    - run: git config --local user.name=cappyzawa
+    - run: git config --local user.email=cappyzawa@yahoo.ne.jp
+    - run: git config --local user.password=${GITHUB_TOKEN}
+    env:
+      GITHUB_TOKEN: ${{ secrets.TOKEN }}
