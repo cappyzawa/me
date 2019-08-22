@@ -8,6 +8,10 @@ jobs:
     steps:
     - name: checkout
       uses: actions/checkout@master
+    - name: install
+      uses: nuxt/actions-yarn@master
+      with:
+        args: install
     - name: test
       uses: nuxt/actions-yarn@master
       with:
@@ -23,6 +27,10 @@ jobs:
     steps:
     - name: checkout
       uses: actions/checkout@master
+    - name: install
+      uses: nuxt/actions-yarn@master
+      with:
+        args: install
     - name: build
       uses: nuxt/actions-yarn@master
       with:
