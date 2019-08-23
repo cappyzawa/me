@@ -4001,6 +4001,18 @@ var author$project$Main$posts = _List_fromArray(
 		{link: './first', title: 'First'},
 		{link: './second', title: 'Second'}
 	]);
+var elm$core$Basics$fdiv = _Basics_fdiv;
+var elm$core$Basics$toFloat = _Basics_toFloat;
+var mdgriffith$elm_ui$Internal$Model$Rgba = F4(
+	function (a, b, c, d) {
+		return {$: 'Rgba', a: a, b: b, c: c, d: d};
+	});
+var mdgriffith$elm_ui$Element$rgb255 = F3(
+	function (red, green, blue) {
+		return A4(mdgriffith$elm_ui$Internal$Model$Rgba, red / 255, green / 255, blue / 255, 1);
+	});
+var cappyzawa$elm_ui_onedark$OneDark$black = A3(mdgriffith$elm_ui$Element$rgb255, 40, 44, 52);
+var cappyzawa$elm_ui_onedark$OneDark$white = A3(mdgriffith$elm_ui$Element$rgb255, 171, 178, 191);
 var elm$core$Basics$apL = F2(
 	function (f, x) {
 		return f(x);
@@ -4023,12 +4035,10 @@ var elm$core$Array$Array_elm_builtin = F4(
 		return {$: 'Array_elm_builtin', a: a, b: b, c: c, d: d};
 	});
 var elm$core$Basics$ceiling = _Basics_ceiling;
-var elm$core$Basics$fdiv = _Basics_fdiv;
 var elm$core$Basics$logBase = F2(
 	function (base, number) {
 		return _Basics_log(number) / _Basics_log(base);
 	});
-var elm$core$Basics$toFloat = _Basics_toFloat;
 var elm$core$Array$shiftStep = elm$core$Basics$ceiling(
 	A2(elm$core$Basics$logBase, 2, elm$core$Array$branchFactor));
 var elm$core$Elm$JsArray$empty = _JsArray_empty;
@@ -10051,10 +10061,6 @@ var mdgriffith$elm_ui$Internal$Model$element = F4(
 	});
 var mdgriffith$elm_ui$Internal$Model$AllowHover = {$: 'AllowHover'};
 var mdgriffith$elm_ui$Internal$Model$Layout = {$: 'Layout'};
-var mdgriffith$elm_ui$Internal$Model$Rgba = F4(
-	function (a, b, c, d) {
-		return {$: 'Rgba', a: a, b: b, c: c, d: d};
-	});
 var mdgriffith$elm_ui$Internal$Model$focusDefaultStyle = {
 	backgroundColor: elm$core$Maybe$Nothing,
 	borderColor: elm$core$Maybe$Nothing,
@@ -10339,7 +10345,6 @@ var mdgriffith$elm_ui$Internal$Model$Px = function (a) {
 	return {$: 'Px', a: a};
 };
 var mdgriffith$elm_ui$Element$px = mdgriffith$elm_ui$Internal$Model$Px;
-var mdgriffith$elm_ui$Element$rgba = mdgriffith$elm_ui$Internal$Model$Rgba;
 var mdgriffith$elm_ui$Internal$Flag$spacing = mdgriffith$elm_ui$Internal$Flag$flag(3);
 var mdgriffith$elm_ui$Internal$Model$SpacingStyle = F3(
 	function (a, b, c) {
@@ -10659,10 +10664,8 @@ var author$project$Main$main = A2(
 	mdgriffith$elm_ui$Element$layout,
 	_List_fromArray(
 		[
-			mdgriffith$elm_ui$Element$Background$color(
-			A4(mdgriffith$elm_ui$Element$rgba, 1, 1, 1, 1)),
-			mdgriffith$elm_ui$Element$Font$color(
-			A4(mdgriffith$elm_ui$Element$rgba, 0, 0, 0, 1)),
+			mdgriffith$elm_ui$Element$Background$color(cappyzawa$elm_ui_onedark$OneDark$black),
+			mdgriffith$elm_ui$Element$Font$color(cappyzawa$elm_ui_onedark$OneDark$white),
 			mdgriffith$elm_ui$Element$Font$regular,
 			mdgriffith$elm_ui$Element$Font$size(32),
 			mdgriffith$elm_ui$Element$Font$family(
