@@ -1,95 +1,60 @@
-module Main exposing (main)
+module Main exposing (..)
 
-import Browser
-import Browser.Navigation as Nav
-import Html exposing (..)
-import Html.Attributes exposing (..)
-import Url
-
-
-main : Program () Model Msg
-main =
-    Browser.application
-        { init = init
-        , view = view
-        , update = update
-        , subscriptions = subscriptions
-        , onUrlChange = UrlChanged
-        , onUrlRequest = LinkClicked
-        }
+import Element exposing (..)
+import Element.Background as Background
+import Element.Border as Border
+import Element.Font as Font
 
 
 
--- MODEL
+--- DATA
 
 
-type alias Model =
-    { key : Nav.Key
-    , url : Url.Url
+type alias Post =
+    { title : String
+    , link : String
     }
 
 
-init : () -> Url.Url -> Nav.Key -> ( Model, Cmd Msg )
-init flags url key =
-    ( Model key url, Cmd.none )
+posts : List Post
+posts =
+    [ { title = "First"
+      , link = "./first"
+      }
+    , { title = "Second"
+      , link = "./second"
+      }
+    ]
 
 
-
--- UPDATE
-
-
-type Msg
-    = LinkClicked Browser.UrlRequest
-    | UrlChanged Url.Url
-
-
-update : Msg -> Model -> ( Model, Cmd Msg )
-update msg model =
-    case msg of
-        LinkClicked urlRequest ->
-            case urlRequest of
-                Browser.Internal url ->
-                    ( model, Nav.pushUrl model.key (Url.toString url) )
-
-                Browser.External href ->
-                    ( model, Nav.load href )
-
-        UrlChanged url ->
-            ( { model | url = url }
-            , Cmd.none
-            )
-
-
-
--- SUBSCRIPTIONS
-
-
-subscriptions : Model -> Sub Msg
-subscriptions _ =
-    Sub.none
-
-
-
--- VIEW
-
-
-view : Model -> Browser.Document Msg
-view model =
-    { title = "URL Interceptor"
-    , body =
-        [ text "The current URL is: "
-        , b [] [ text (Url.toString model.url) ]
-        , ul []
-            [ viewLink "/home"
-            , viewLink "/profile"
-            , viewLink "/reviews/the-century-of-the-self"
-            , viewLink "/reviews/public-opinion"
-            , viewLink "/reviews/shah-of-shahs"
+main =
+    Element.layout
+        [ Background.color (rgba 1 1 1 1)
+        , Font.color (rgba 0 0 0 1)
+        , Font.regular
+        , Font.size 32
+        , Font.family
+            [ Font.external
+                { url = "https://fonts.googleapis.com/css?family=Droid+Sans+Mono"
+                , name = "Droid Sans Mono"
+                }
+            , Font.sansSerif
             ]
         ]
-    }
-
-
-viewLink : String -> Html msg
-viewLink path =
-    li [] [ a [ href path ] [ text path ] ]
+    <|
+        Element.table
+            [ Element.centerX
+            , Element.centerY
+            , Element.spacing 5
+            , Element.padding 10
+            ]
+            { data = posts
+            , columns =
+                [ { header = Element.text "TITLE"
+                  , width = px 200
+                  , view =
+                        \post ->
+                            Element.text post.title
+                  }
+                ]
+            }
