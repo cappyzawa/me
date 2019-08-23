@@ -4,6 +4,7 @@ import Element exposing (..)
 import Element.Background as Background
 import Element.Border as Border
 import Element.Font as Font
+import OneDark exposing (..)
 
 
 
@@ -29,8 +30,8 @@ posts =
 
 main =
     Element.layout
-        [ Background.color (rgba 1 1 1 1)
-        , Font.color (rgba 0 0 0 1)
+        [ Background.color OneDark.black
+        , Font.color OneDark.white
         , Font.regular
         , Font.size 32
         , Font.family
