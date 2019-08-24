@@ -6,7 +6,7 @@
     "elm-version": "0.19.0",
     "dependencies": {
         "direct": {
-            "cappyzawa/elm-ui-onedark": "1.0.2",
+            "cappyzawa/elm-ui-colors": "2.1.0",
             "elm/browser": "1.0.1",
             "elm/core": "1.0.2",
             "elm/html": "1.0.0",
