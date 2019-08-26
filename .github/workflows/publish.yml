@@ -1,14 +1,5 @@
 name: Test & Publish
-on:
-  push:
-    branches:
-    - master
-    paths:
-    - "src/*"
-    - ".github/*"
-    - "package.json"
-    - "yarn.lock"
-    - "elm.json"
+on: [push]
 
 jobs:
   test:
@@ -44,13 +35,21 @@ jobs:
       uses: nuxt/actions-yarn@master
       with:
         args: run build
-    - name: publish
+    - name: clone cappyzawa.github.io
       run: |
-        git checkout -b tmpbranch
+        git clone https://github.com/cappyzawa/cappyzawa.github.io.git ../cappyzawa.github.io
+        mv index.html ../cappyzawa.github.io/
+    - name: commit & publish
+      run: |
+        cd ../cappyzawa.github.io
+
         git config --local user.name cappyzawa
         git config --local user.email cappyzawa@yahoo.ne.jp
-        git commit -am "[ci skip] BUILD by bot" --allow-empty
-        git remote set-url origin https://cappyzawa:${GITHUB_TOKEN}@github.com/cappyzawa/blog
-        git push origin tmpbranch:master
+
+        git add index.html
+        git commit -m "[ci skip] BUILD by bot" --allow-empty
+
+        git remote set-url origin https://cappyzawa:${GITHUB_TOKEN}@github.com/cappyzawa/cappyzawa.github.io
+        git push origin master
       env:
         GITHUB_TOKEN: ${{ secrets.TOKEN }}

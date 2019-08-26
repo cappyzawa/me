@@ -1,15 +1,15 @@
 {
-  "name": "blog",
+  "name": "me",
   "version": "1.0.0",
-  "description": "cappyzawa blog",
+  "description": "about cappyzawa",
   "main": "index.js",
-  "repository": "https://github.com/cappyzawa/blog",
+  "repository": "https://github.com/cappyzawa/me",
   "author": "cappyzawa <cappyzawa@yahoo.ne.jp>",
   "license": "MIT",
   "private": false,
   "scripts": {
     "test": "echo 'no test'",
-    "build": "npx elm make src/Main.elm --output=docs/index.html",
+    "build": "npx elm make src/Main.elm --output=index.html",
     "start": "npx elm reactor",
     "format": "npx elm-format --elm-version=0.19 src --yes"
   },
