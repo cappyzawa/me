@@ -1,130 +1,166 @@
-module Main exposing (..)
+module Main exposing (main)
 
 import Browser
+import Browser.Navigation as Nav
 import Color.OneDark as OneDark
 import Element exposing (..)
 import Element.Background as Background
 import Element.Border as Border
 import Element.Font as Font
 import Element.Region as Region
-import Html exposing (Html)
-
-
-
---- DATA
+import Html exposing (..)
+import Html.Attributes exposing (..)
+import Page.Top
+import Route exposing (Route)
+import Url
 
 
 main : Program () Model Msg
 main =
-    Browser.sandbox
+    Browser.application
         { init = init
         , view = view
         , update = update
+        , subscriptions = subscriptions
+        , onUrlRequest = LinkClicked
+        , onUrlChange = UrlChanged
         }
 
 
+
+-- MODEL
+
+
 type alias Model =
-    {}
+    { key : Nav.Key
+    , page : Page
+    }
 
 
-init : Model
-init =
-    {}
+type Page
+    = NotFound
+    | TopPage Page.Top.Model
+
+
+
+-- SUBSCRIPTIONS
+
+
+subscriptions : Model -> Sub Msg
+subscriptions model =
+    Sub.none
+
+
+
+-- VIEW
+
+
+view : Model -> Browser.Document Msg
+view model =
+    { title = "cappyzawa blog"
+    , body =
+        [ mainMsg model ]
+    }
+
+
+mainMsg : Model -> Html Msg
+mainMsg model =
+    Element.layout
+        [ Background.color OneDark.black
+        , Font.color OneDark.white
+        , Font.regular
+        , Font.size 24
+        , Font.family
+            [ Font.external
+                { url = "https://fonts.googleapis.com/css?family=Droid+Sans+Mono"
+                , name = "Droid Sans Mono"
+                }
+            , Font.sansSerif
+            ]
+        ]
+    <|
+        case model.page of
+            NotFound ->
+                viewNotFound
+
+            TopPage topPageModel ->
+                Page.Top.view topPageModel
+                    |> Element.map TopMsg
+
+
+viewNotFound : Element Msg
+viewNotFound =
+    Element.link
+        [ centerX
+        , centerY
+        , Font.size 60
+        , Region.heading 1
+        , Element.mouseOver
+            [ Font.color OneDark.blue
+            , Font.size 100
+            ]
+        ]
+        { url = "/"
+        , label = Element.text "404 NotFound"
+        }
+
+
+
+-- INIT
+
+
+init : () -> Url.Url -> Nav.Key -> ( Model, Cmd Msg )
+init _ url key =
+    Model key (TopPage Page.Top.init)
+        |> goTo (Route.parse url)
+
+
+
+-- UPDATE
 
 
 type Msg
-    = None
+    = LinkClicked Browser.UrlRequest
+    | UrlChanged Url.Url
+    | TopMsg Page.Top.Msg
 
 
-update : Msg -> Model -> Model
+update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
-    {}
+    case msg of
+        LinkClicked urlRequest ->
+            case urlRequest of
+                Browser.Internal url ->
+                    ( model, Nav.pushUrl model.key (Url.toString url) )
+
+                Browser.External href ->
+                    ( model, Nav.load href )
+
+        UrlChanged url ->
+            goTo (Route.parse url) model
+
+        TopMsg topMsg ->
+            case model.page of
+                TopPage topModel ->
+                    let
+                        ( newTopModel, topCmd ) =
+                            Page.Top.update topMsg topModel
+                    in
+                    ( { model | page = TopPage newTopModel }
+                    , Cmd.map TopMsg topCmd
+                    )
+
+                _ ->
+                    ( model, Cmd.none )
 
 
-view : Model -> Html Msg
-view model =
-    Element.layout
-        layoutOption
-    <|
-        Element.row
-            [ width fill
-            , height fill
-            ]
-            [ project, viewer ]
+goTo : Maybe Route -> Model -> ( Model, Cmd Msg )
+goTo maybeRoute model =
+    case maybeRoute of
+        Nothing ->
+            ( { model | page = NotFound }, Cmd.none )
 
-
-darkBlack : Element.Color
-darkBlack =
-    rgb255 14 21 26
-
-
-layoutOption : List (Attribute Msg)
-layoutOption =
-    [ Background.color darkBlack
-    , Font.color OneDark.white
-    , Font.regular
-    , Font.size 32
-    , Font.family
-        [ Font.external
-            { url = "https://fonts.googleapis.com/css?family=Droid+Sans+Mono"
-            , name = "Droid Sans Mono"
-            }
-        , Font.sansSerif
-        ]
-    ]
-
-
-project : Element Msg
-project =
-    Element.column
-        [ width (fillPortion 20)
-        , spacing 36
-        , padding 10
-        , Border.color (Element.rgb255 0 0 0)
-        , explain Debug.todo
-        ]
-        [ projectHeader
-        , el
-            [ Font.size 14
-            , centerX
-            ]
-            (Element.text "content")
-        ]
-
-
-projectHeader : Element Msg
-projectHeader =
-    el
-        [ Font.size 16
-        , Region.heading 1
-        , height (px 35)
-        , centerX
-        ]
-        (Element.text "Project")
-
-
-viewerHeader : Element Msg
-viewerHeader =
-    el
-        [ Font.size 16
-        , Region.heading 1
-        , height (px 35)
-        ]
-        (Element.text "CAPPYZAWA")
-
-
-viewer : Element Msg
-viewer =
-    Element.column
-        [ width (fillPortion 80)
-        , spacing 36
-        , padding 10
-        , Background.color OneDark.black
-        , explain Debug.todo
-        ]
-        [ viewerHeader
-        , el
-            [ Font.size 14
-            ]
-            (Element.text "content")
-        ]
+        Just Route.Top ->
+            ( { model | page = TopPage Page.Top.init }
+            , Cmd.none
+            )
