@@ -38,7 +38,7 @@ jobs:
     - name: clone cappyzawa.github.io
       run: |
         git clone https://github.com/cappyzawa/cappyzawa.github.io.git ../cappyzawa.github.io
-        mv index.html ../cappyzawa.github.io/
+        mv elm.js ../cappyzawa.github.io/
     - name: commit & publish
       run: |
         cd ../cappyzawa.github.io
@@ -46,7 +46,7 @@ jobs:
         git config --local user.name cappyzawa
         git config --local user.email cappyzawa@yahoo.ne.jp
 
-        git add index.html
+        git add elm.js
         git commit -m "[ci skip] BUILD by bot" --allow-empty
 
         git remote set-url origin https://cappyzawa:${GITHUB_TOKEN}@github.com/cappyzawa/cappyzawa.github.io
