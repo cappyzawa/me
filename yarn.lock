@@ -255,7 +255,7 @@ elm-test@^0.19.0-rev6:
     which "2.0.1"
     xmlbuilder "^13.0.2"
 
-elm@^0.19.0-no-deps:
+elm@^0.19.1:
   version "0.19.1"
   resolved "https://registry.yarnpkg.com/elm/-/elm-0.19.1.tgz#66461c49146099b866fdaf8af681331e5bec703d"
   integrity sha512-rehOtJKZvoYDddlrd7AX5NAf0H+LUllnBg3AHaeaIOKWzw4W316d7Bkhlbo7aSG+hVUVWP2ihKwyYkDi589TfA==
