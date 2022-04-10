@@ -9,35 +9,27 @@ jobs:
     name: unit-test
     runs-on: ubuntu-latest
     steps:
-    - name: checkout
-      uses: actions/checkout@master
-    - name: install
-      uses: nuxt/actions-yarn@master
+    - uses: actions/checkout@v2
+    - &yarn_install
+      uses: borales/actions-yarn@v2.3.0
       with:
-        args: install
-    - name: test
-      uses: nuxt/actions-yarn@master
+        cmd: install # will run `yarn install` command
+    - &yarn_build
+      uses: borales/actions-yarn@v2.3.0
       with:
-        args: test
-    - name: Codecov Action
-      uses: Atrox/codecov-action@v0.1.3
-      env:
-        CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+        cmd: build # will run `yarn build` command
+    - &yarn_test
+      uses: borales/actions-yarn@v2.3.0
+      with:
+        cmd: test # will run `yarn test` command
   publish:
     name: publish
     runs-on: ubuntu-latest
     needs: test
     steps:
-    - name: checkout
-      uses: actions/checkout@master
-    - name: install
-      uses: nuxt/actions-yarn@master
-      with:
-        args: install
-    - name: build
-      uses: nuxt/actions-yarn@master
-      with:
-        args: run build
+    - uses: actions/checkout@v2
+    - *yarn_install
+    - *yarn_build
     - name: clone cappyzawa.github.io
       run: |
         git clone https://github.com/cappyzawa/cappyzawa.github.io.git ../cappyzawa.github.io
