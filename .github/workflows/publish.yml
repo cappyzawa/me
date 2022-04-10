@@ -34,16 +34,16 @@ jobs:
         repository: cappyzawa/cappyzawa.github.io
         ssh-key: ${{ secrets.PRIVATE_KEY }}
         clean: false
-        path: cappyzawa.github.io
+        path: ../cappyzawa.github.io
+    - name: move elm.js to cappyzawa.github.io repo
+      run: |
+        mv elm.js ../cappyzawa.github.io
     - run: |
-        pwd
-        ls -al ../
-    - run: |
+        cd ../cappyzawa.github.io
         git config --local user.name cappyzawa
         git config --local user.email cappyzawa@gmail.com
 
-        # git add elm.js
-        # git commit -m "[ci skip] BUILD by bot" --allow-empty
-        #
-        # git remote set-url origin https://cappyzawa:${GITHUB_TOKEN}@github.com/cappyzawa/cappyzawa.github.io
-        # git push origin master
+        git add elm.js
+        git commit -m "[ci skip] BUILD by bot" --allow-empty
+
+        git push origin master
