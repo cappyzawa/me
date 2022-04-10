@@ -33,7 +33,10 @@ jobs:
       with:
         repository: cappyzawa/cappyzawa.github.io
         ssh-key: ${{ secrets.PRIVATE_KEY }}
+        clean: false
+        path: cappyzawa.github.io
     - run: |
+        pwd
         ls -al ../
     - run: |
         git config --local user.name cappyzawa
