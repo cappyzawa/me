@@ -10,16 +10,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-    - &yarn_install
-      uses: borales/actions-yarn@v2.3.0
+    - uses: borales/actions-yarn@v2.3.0
       with:
         cmd: install # will run `yarn install` command
-    - &yarn_build
-      uses: borales/actions-yarn@v2.3.0
-      with:
-        cmd: build # will run `yarn build` command
-    - &yarn_test
-      uses: borales/actions-yarn@v2.3.0
+    - uses: borales/actions-yarn@v2.3.0
       with:
         cmd: test # will run `yarn test` command
   publish:
@@ -28,8 +22,12 @@ jobs:
     needs: test
     steps:
     - uses: actions/checkout@v2
-    - *yarn_install
-    - *yarn_build
+    - uses: borales/actions-yarn@v2.3.0
+      with:
+        cmd: install # will run `yarn install` command
+    - uses: borales/actions-yarn@v2.3.0
+      with:
+        cmd: build # will run `yarn build` command
     - name: clone cappyzawa.github.io
       run: |
         git clone https://github.com/cappyzawa/cappyzawa.github.io.git ../cappyzawa.github.io
